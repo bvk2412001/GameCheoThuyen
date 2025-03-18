@@ -1,0 +1,134 @@
+{
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
+  "uuid": "cd5d5802-4ef4-4efa-95c6-3fcb7855864a",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "cd5d5802-4ef4-4efa-95c6-3fcb7855864a@6c48a",
+      "displayName": "ĐÔI GUỐC-168",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "cd5d5802-4ef4-4efa-95c6-3fcb7855864a",
+        "isUuid": true,
+        "visible": false,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "cd5d5802-4ef4-4efa-95c6-3fcb7855864a@f9941",
+      "displayName": "ĐÔI GUỐC-168",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 43,
+        "offsetY": 0,
+        "trimX": 212,
+        "trimY": 250,
+        "width": 2062,
+        "height": 2009,
+        "rawWidth": 2400,
+        "rawHeight": 2509,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -1031,
+            -1004.5,
+            0,
+            1031,
+            -1004.5,
+            0,
+            -1031,
+            1004.5,
+            0,
+            1031,
+            1004.5,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            212,
+            2259,
+            2274,
+            2259,
+            212,
+            250,
+            2274,
+            250
+          ],
+          "nuv": [
+            0.08833333333333333,
+            0.0996412913511359,
+            0.9475,
+            0.0996412913511359,
+            0.08833333333333333,
+            0.9003587086488641,
+            0.9475,
+            0.9003587086488641
+          ],
+          "minPos": [
+            -1031,
+            -1004.5,
+            0
+          ],
+          "maxPos": [
+            1031,
+            1004.5,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "cd5d5802-4ef4-4efa-95c6-3fcb7855864a@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "hasAlpha": true,
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "cd5d5802-4ef4-4efa-95c6-3fcb7855864a@6c48a"
+  }
+}

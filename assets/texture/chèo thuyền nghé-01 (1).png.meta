@@ -1,0 +1,134 @@
+{
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
+  "uuid": "9a10b65b-c40a-4a17-99c5-ea63e5af447d",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "9a10b65b-c40a-4a17-99c5-ea63e5af447d@6c48a",
+      "displayName": "chèo thuyền nghé-01 (1)",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "9a10b65b-c40a-4a17-99c5-ea63e5af447d",
+        "isUuid": true,
+        "visible": false,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "9a10b65b-c40a-4a17-99c5-ea63e5af447d@f9941",
+      "displayName": "chèo thuyền nghé-01 (1)",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": -10.5,
+        "trimX": 0,
+        "trimY": 22,
+        "width": 175,
+        "height": 124,
+        "rawWidth": 175,
+        "rawHeight": 147,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -87.5,
+            -62,
+            0,
+            87.5,
+            -62,
+            0,
+            -87.5,
+            62,
+            0,
+            87.5,
+            62,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            0,
+            125,
+            175,
+            125,
+            0,
+            1,
+            175,
+            1
+          ],
+          "nuv": [
+            0,
+            0.006802721088435374,
+            1,
+            0.006802721088435374,
+            0,
+            0.8503401360544217,
+            1,
+            0.8503401360544217
+          ],
+          "minPos": [
+            -87.5,
+            -62,
+            0
+          ],
+          "maxPos": [
+            87.5,
+            62,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "9a10b65b-c40a-4a17-99c5-ea63e5af447d@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "hasAlpha": true,
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "9a10b65b-c40a-4a17-99c5-ea63e5af447d@6c48a"
+  }
+}
