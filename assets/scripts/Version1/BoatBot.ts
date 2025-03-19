@@ -22,6 +22,9 @@ export class BoatBot extends Component {
     @property(ParticleSystem2D)
     particleSystem: ParticleSystem2D = null;
     contain: Node
+
+
+
     onLoad() {
         this.rigidBody2D = this.node.getComponent(RigidBody2D)
         this.boxCollider2D = this.node.getComponent(PolygonCollider2D)
@@ -33,39 +36,40 @@ export class BoatBot extends Component {
         this.boxCollider2D.on(Contact2DType.POST_SOLVE, this.onPostSolve, this);
         this.boxCollider2D.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         this.contain = this.node.getChildByName("Containt")
-        this.schedule(() => {
-            if (this.isConvacham == false) return
-            this.node.angle += randomRangeInt(-20, 20) * 30
-            this.quayxe()
-        }, 0.5)
         this.node.children[5].getComponent(Animation).play("CheoThuyen")
         this.node.children[6].getComponent(Animation).play("CheoThuyen-001")
         this.node.children[7].getComponent(Animation).play("Character")
         this.node.getComponent(Animation).play("ScaleBoat")
         this.particleSystem = this.node.getComponentInChildren(ParticleSystem2D)
+
+        this.schedule(() => {
+            if (GamePlayCtrl.instance.IsUserPlay == false) return;
+            if (GamePlayCtrl.instance.IsUserPlay2 == false) return;
+            if (this.isConvacham == false) return
+            this.node.angle += randomRangeInt(-20, 20) * 30
+            //this.quayxe()
+        }, 0.5)
     }
 
     update(deltaTime: number) {
+        // if(GamePlayCtrl.instance.isBotPlay == false) return;
         this.moveBoss(deltaTime);
     }
     onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        if (otherCollider.node.name === "Wall" || otherCollider.node.getComponent(BoatBot) || otherCollider.node.getComponent(Item1)) {
+        if (otherCollider.node.name === "Wall" || otherCollider.node.getComponent(BoatBot)) {
             this.isConvacham = false
         }
     }
 
 
     onPostSolve(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        if (otherCollider.node.name === "Wall" || otherCollider.node.getComponent(BoatBot) || otherCollider.node.getComponent(Item1)) {
+        if (otherCollider.node.name === "Wall" || otherCollider.node.getComponent(BoatBot)) {
             this.isConvacham = true
         }
     }
 
     isConvacham = false
-    quayxe(): void {
 
-
-    }
 
     // Hàm di chuyển boss theo hướng đến target
     moveBoss(deltaTime: number) {
@@ -113,7 +117,6 @@ export class BoatBot extends Component {
         if (otherCollider.node.name === "Wall" || otherCollider.node.getComponent(BoatBot) || otherCollider.node.getComponent(Item1)) {
             this.scheduleOnce(() => {
                 this.isConvacham = true
-                this.quayxe()
                 //this.tryChangeDirection();
             })
 

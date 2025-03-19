@@ -1,4 +1,4 @@
-import { _decorator, CCInteger, Component, EventTouch, math, Node, Vec2, Vec3 } from 'cc';
+import { _decorator, Animation, CCInteger, Component, EventTouch, math, misc, Node, Vec2, Vec3 } from 'cc';
 import { BoatCtrl } from './BoatCtrl';
 import { GamePlayCtrl } from './GamePlayCtrl';
 const { ccclass, property } = _decorator;
@@ -16,9 +16,9 @@ export class HelmCtrlV1 extends Component {
 
     private targetCarAngle: number = 0;  // Góc mục tiêu của xe
     @property(CCInteger)
-    private lerpSpeed: number = 0.05;  // Tốc độ di chuyển dần dần của xe (giá trị giữa 0 và 1)
+    private lerpSpeed: number = 0.1;  // Tốc độ di chuyển dần dần của xe (giá trị giữa 0 và 1)
 
-    private steeringSpeed: number = 0.3;  // Tốc độ xoay của vô lăng (giảm tốc độ quay)
+    private steeringSpeed: number = 0.2;  // Tốc độ xoay của vô lăng (giảm tốc độ quay)
 
     onLoad() {
         // Đăng ký sự kiện chạm cho vô lăng
@@ -29,6 +29,10 @@ export class HelmCtrlV1 extends Component {
     }
 
     onTouchStart(event: EventTouch) {
+        if(GamePlayCtrl.instance.IsUserPlay == false) return
+        GamePlayCtrl.instance.IsUserPlay2 = true;
+        GamePlayCtrl.instance.hand2.active = false
+        GamePlayCtrl.instance.helm.getComponent(Animation).stop()
         // Lấy vị trí của vô lăng (tâm của vô lăng)
         const worldPos = this.node.getWorldPosition();
         this.wheelCenter.set(worldPos.x, worldPos.y); // Lưu tâm của vô lăng
@@ -45,8 +49,9 @@ export class HelmCtrlV1 extends Component {
 
     onTouchMove(event: EventTouch) {
         // Lấy vị trí chạm hiện tại
+        if(GamePlayCtrl.instance.IsUserPlay == false) return
         if (GamePlayCtrl.instance.startGame == false) return;
-        if (this.boat && this.boat.getComponent(BoatCtrl).isChim == false) {
+        if (this.boat) {
             const touchPos = event.getUILocation();
             const currentVector = new Vec2(touchPos.x - this.wheelCenter.x, touchPos.y - this.wheelCenter.y);
 
@@ -80,22 +85,28 @@ export class HelmCtrlV1 extends Component {
         }
     }
 
+    lerpAngle(a: number, b: number, t: number): number {
+        let delta = ((b - a + 180) % 360) - 180; // Giữ góc quay trong phạm vi hợp lý
+        return a + delta * t;
+    }
+
+
+    current = 0
     updateCarRotation(deltaTime) {
-        if (this.boat && this.boat.getComponent(BoatCtrl).isChim == false) {
-            // Lấy góc hiện tại của xe
-            const currentCarAngle = this.boat.angle;
-
-            // Làm mượt quá trình xoay của xe dần dần tới góc mục tiêu (góc của vô lăng)
-            const newCarAngle = math.lerp(currentCarAngle, this.node.angle, this.lerpSpeed / 5);
-
-            // Cập nhật góc xoay mới cho xe
-            this.boat.angle = newCarAngle;
+        if(GamePlayCtrl.instance.IsUserPlay == false) return
+        if (this.boat) {
+            // Lấy góc hiện tại của thuyền
+            // Làm mượt góc quay theo thời gian
+            const newCarAngle = math.lerp(this.current, this.node.angle, this.lerpSpeed * 10 * deltaTime);
+            this.current = newCarAngle
+            // Cập nhật góc quay mới cho thuyền
+            this.boat.angle = this.current;
         }
-
     }
 
     onTouchEnd(event: EventTouch) {
         // Không cần làm gì thêm khi người dùng nhấc tay ra
+        //this.current = this.boat.angle = this.current;
     }
 
     update(deltaTime: number) {

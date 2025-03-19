@@ -53,16 +53,55 @@ export class GamePlayCtrl extends Component {
     @property(Node)
     tutorial1: Node
 
+    @property(Node)
+    hand1: Node
+
+    @property(Node)
+    hand2: Node
+
+    @property(Node)
+    up: Node
+
+
+    @property(Node)
+    down: Node
+
+
+    @property(Node)
+    helpm: Node
 
     startTime
+
+
+
+    playTutorial() {
+        if (GamePlayCtrl.instance.isPlayTutorial == false) {
+            if (GamePlayCtrl.instance.IsUserPlay == true) return
+            GamePlayCtrl.instance.IsUserPlay = true
+            this.hand1.active = false
+
+            this.scheduleOnce(() => {
+                SoundGameMaganer.instance.playThoai(13)
+                this.up.getComponent(Animation).stop()
+                this.down.getComponent(Animation).stop()
+                this.helm.getComponent(Animation).play("Scale2")
+                this.hand2.active = true;
+                GamePlayCtrl.instance.IsUserPlay2 = false;
+            }, 0.5)
+        }
+    }
+
+
     start() {
         this.startTime = new Date().getTime()
         GamePlayCtrl.instance = this
-        //this.randomList()
+
         console.log("[INFO]: Progress: 1")
-        this.ShowTutorial1()
+        //this.ShowTutorial1()
 
     }
+
+    isPlayTutorial = false
 
     version = -1
     randomList() {
@@ -338,25 +377,40 @@ export class GamePlayCtrl extends Component {
         }
     }
 
-
+    IsUserPlay = false
+    IsUserPlay2 = true
+    vectorCorrect = new Vec3(-1231.011, -1000.167)
     StartGame() {
         this.timeCoutdown.active = false
         this.thoai.active = false
         this.randomList()
         this.SetBoat()
         this.SetUp()
-        this.scheduleOnce(() => {
 
+        this.FindBoardCorrect()
+        this.scheduleOnce(() => {
             this.SetTimeCountdown()
             SoundGameMaganer.instance.playEffect(3)
-        }, 4)
+        }, 5)
 
 
 
         this.scheduleOnce(() => {
-            this.startGame = true
-            this.SetTime()
-        }, 8)
+            this.scheduleOnce(()=>{
+                this.startGame = true
+                this.hand1.active = true
+                this.up.getComponent(Animation).play("Scale2")
+                this.scheduleOnce(() => {
+                    this.down.getComponent(Animation).play("Scale2")
+                }, 0.2)
+
+                this.SetTime()
+            })
+            
+            SoundGameMaganer.instance.playThoai(12)
+
+
+        }, 9)
     }
 
 
@@ -372,7 +426,7 @@ export class GamePlayCtrl extends Component {
                 element.addComponent(BoatBot)
                 this.scheduleOnce(() => {
                     element.angle = randomRangeInt(-90, 90)
-                }, 8)
+                }, 30)
 
             }
 
@@ -705,12 +759,14 @@ export class GamePlayCtrl extends Component {
         if (this.startGame == false && this.tutorial1 != null) {
             this.timeTutorial1 -= dt
             if (this.timeTutorial1 <= 0) {
-                this.tutorial1.active = true
+                //this.tutorial1.active = true
             }
             else {
                 this.tutorial1.active = false
             }
         }
+        if(GamePlayCtrl.instance.IsUserPlay == false) return;
+        if(GamePlayCtrl.instance.IsUserPlay2 == false) return;
         if (this.startGame == false) return
         this.timeTutorial -= dt
         if (this.timeTutorial <= 0) {
@@ -732,8 +788,8 @@ export class GamePlayCtrl extends Component {
 
         }
         else {
-            if (tutorial.instance.targetNode == null || tutorial.instance.targetNode.active == false)
-                tutorial.instance.node.parent.active = false
+            // if (tutorial.instance.targetNode == null || tutorial.instance.targetNode.active == false)
+            //     tutorial.instance.node.parent.active = false
         }
     }
     public getSizeWindow(): Size {
@@ -844,6 +900,69 @@ export class GamePlayCtrl extends Component {
                 .start()
         }
 
+    }
+
+
+    FindBoardCorrect() {
+        let listWin = []
+        if (GamePlayCtrl.instance.version != 4) {
+            for (let i = 0; i < GamePlayCtrl.instance.listWin.length; i++) {
+                let x = GamePlayCtrl.instance.listWin[i]
+                if (x.active == true) {
+                    if (GamePlayCtrl.instance.version == 1) {
+                        listWin.push(x)
+                    }
+
+                    if (GamePlayCtrl.instance.version == 2) {
+                        listWin.push(x)
+                    }
+
+                    if (GamePlayCtrl.instance.version == 3 && eval(x.getComponent(Item1).data.type) != eval(GamePlayCtrl.instance.bang.data.type)) {
+                        continue
+                    }
+                    if (GamePlayCtrl.instance.version == 3 && eval(x.getComponent(Item1).data.type) == eval(GamePlayCtrl.instance.bang.data.type)) {
+                        listWin.push(x)
+                    }
+                }
+            }
+
+        }
+
+        else {
+
+            for (let i = 0; i < GamePlayCtrl.instance.items.children.length; i++) {
+                let x = GamePlayCtrl.instance.items.children[i]
+                if (x.active == true) {
+                    if (
+                        (x.getComponent(Item1).data.type != GamePlayCtrl.instance.bang2.data.type || GamePlayCtrl.instance.bang2.isType1 == true)
+                        && (GamePlayCtrl.instance.removeAccents(x.getComponent(Item1).data.type)
+                            != GamePlayCtrl.instance.removeAccents(GamePlayCtrl.instance.bang2.data.type1 || GamePlayCtrl.instance.bang2.isType2 == true))) {
+                        continue
+                    }
+
+                    if ((x.getComponent(Item1).data.type == GamePlayCtrl.instance.bang2.data.type && GamePlayCtrl.instance.bang2.isType1 == false)
+                        || (GamePlayCtrl.instance.removeAccents(x.getComponent(Item1).data.type) == GamePlayCtrl.instance.removeAccents(GamePlayCtrl.instance.bang2.data.type1)
+                            && GamePlayCtrl.instance.bang2.isType2 == false)
+
+                    ) {
+
+                        if (x.getComponent(Item1).data.type == GamePlayCtrl.instance.bang2.data.type && GamePlayCtrl.instance.bang2.isType1 == false) {
+                            console.log(x.getComponent(Item1).data.type)
+                            listWin.push(x)
+                        }
+
+                        if (GamePlayCtrl.instance.removeAccents(x.getComponent(Item1).data.type) == GamePlayCtrl.instance.removeAccents(GamePlayCtrl.instance.bang2.data.type1) && GamePlayCtrl.instance.bang2.isType2 == false) {
+                            console.log(x.getComponent(Item1).data.type)
+                            listWin.push(x)
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        listWin[0].setPosition(this.vectorCorrect)
     }
 
 }

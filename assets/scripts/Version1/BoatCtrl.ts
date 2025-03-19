@@ -47,7 +47,6 @@ export class BoatCtrl extends Component {
         PhysicsSystem2D.instance.fixedTimeStep = 1 / 120;
         this.contain = this.node.getChildByName("Containt")
         this.particleSystem = this.node.getComponentInChildren(ParticleSystem2D)
-
         this.node.children[5].getComponent(Animation).play("CheoThuyen")
         this.node.children[6].getComponent(Animation).play("CheoThuyen-001")
         this.node.children[7].getComponent(Animation).play("Character")
@@ -148,10 +147,12 @@ export class BoatCtrl extends Component {
                         GamePlayCtrl.instance.AddScore()
                         item.VaChamDung()
                         SoundGameMaganer.instance.playEffect(0)
-                        if (this.indexdung < 1) {
-                            SoundGameMaganer.instance.playKhen()
-                            this.indexdung++
-                        }
+                        this.scheduleOnce(() => {
+                            if (this.indexdung < 1) {
+                                SoundGameMaganer.instance.playKhen()
+                                this.indexdung++
+                            }
+                        }, 1)
                         item.listAvatar.forEach((element: Node) => {
                             item.layout3.getComponent(Layout).enabled = false
                             item.layoutTop.getComponent(Layout).enabled = false
@@ -203,14 +204,16 @@ export class BoatCtrl extends Component {
                         isCo = true;
                         element.getComponent(BoardV1).Eat()
                         GamePlayCtrl.instance.AddScore()
-                        if (this.indexdung < 1) {
-                            SoundGameMaganer.instance.playKhen()
-                            this.indexdung++
-                        }
+                        this.scheduleOnce(() => {
+                            if (this.indexdung < 1) {
+                                SoundGameMaganer.instance.playKhen()
+                                this.indexdung++
+                            }
+                        }, 1)
                         this.scheduleOnce(() => {
                             SoundGameMaganer.instance.playChu(item.data.auChu)
                             otherCollider.node.active = false
-                        }, 0.5)
+                        }, 0)
 
                     }
                 })
@@ -248,10 +251,12 @@ export class BoatCtrl extends Component {
                     GamePlayCtrl.instance.AddScore()
 
                     SoundGameMaganer.instance.playEffect(0)
-                    if (this.indexdung < 1) {
-                        SoundGameMaganer.instance.playKhen()
-                        this.indexdung++
-                    }
+                    this.scheduleOnce(() => {
+                        if (this.indexdung < 1) {
+                            SoundGameMaganer.instance.playKhen()
+                            this.indexdung++
+                        }
+                    }, 1)
                     this.scheduleOnce(() => {
                         SoundGameMaganer.instance.playSo(GamePlayCtrl.instance.bang.data.auSo)
                         GamePlayCtrl.instance.bang.TinhDiemVe3()
@@ -339,6 +344,12 @@ export class BoatCtrl extends Component {
     }
 
     lateUpdate(deltaTime: number) {
+
+        if (GamePlayCtrl.instance.IsUserPlay == false) return;
+        if (GamePlayCtrl.instance.IsUserPlay2 == false) {
+            this.rigidBody2D.linearVelocity = new Vec2(0, 0)
+            return;
+        }
         if (GamePlayCtrl.instance.startGame == false) return
         this.boxCollider2D.sensor = false
         if (this.isChim == true) {

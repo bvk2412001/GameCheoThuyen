@@ -48,10 +48,13 @@ export class SoundGameMaganer extends Component {
         this.audioSource1.loop = true
         this.audioSource1.play()
     }
+    indexKhen = 0
     playKhen() {
+        if (this.indexKhen == this.khen.length) this.indexKhen = 0
         this.audioSource.stop()
-        this.audioSource.clip = this.khen[randomRangeInt(0, this.khen.length)]
+        this.audioSource.clip = this.khen[this.indexKhen]
         this.audioSource.play()
+        this.indexKhen++
     }
 
     playSai() {

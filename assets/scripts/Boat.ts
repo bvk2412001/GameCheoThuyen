@@ -1,4 +1,4 @@
-import { _decorator, CCInteger, Component, Input, Node, Sprite, tween } from 'cc';
+import { _decorator, Animation, CCInteger, Component, Input, Node, Sprite, tween } from 'cc';
 import { SelectBoat } from './SelectBoat';
 import { SoundGameMaganer } from './SoundGameMaganer';
 import { GamePlayCtrl } from './Version1/GamePlayCtrl';
@@ -25,11 +25,14 @@ export class Boat extends Component {
     OnClick() {
         if (this.numberCard == SelectBoat.instance.numberCurrent || SelectBoat.instance.isSelect == true) return;
         GamePlayCtrl.instance.timeTutorial1 = 5
-        SoundGameMaganer.instance.playEffect(5)
+        SoundGameMaganer.instance.playEffect(6)
+        SelectBoat.instance.endSelectBoat = true;
         SelectBoat.instance.isSelect = true
         let pos = SelectBoat.instance.boatMidle.position.clone()
         let pos1 = this.node.position.clone()
         SelectBoat.instance.boatMidle.getComponent(Boat).SetNormal()
+        SelectBoat.instance.btnAcceptNode.getComponent(Animation).play("Scale")
+        SelectBoat.instance.end();
         tween(this.node).to(0.5, { position: pos })
             .call(() => {
                 SelectBoat.instance.btnAcceptNode.active = true
