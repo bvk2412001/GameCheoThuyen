@@ -73,7 +73,7 @@ export class BoatBot extends Component {
 
     // Hàm di chuyển boss theo hướng đến target
     moveBoss(deltaTime: number) {
-        if (GamePlayCtrl.instance.startGame == false) return
+        if (GamePlayCtrl.instance.isPlaybot == false) return
         // Lấy vị trí hiện tại của node và target
         let currentPosition = this.node.getWorldPosition();
         let targetPosition = this.target.getWorldPosition();

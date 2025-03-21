@@ -54,6 +54,9 @@ export class tutorial extends Component {
         }
     }
 
+
+
+
     FindTarget() {
         let listWin = []
         if (GamePlayCtrl.instance.version != 4) {

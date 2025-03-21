@@ -1,4 +1,4 @@
-import { _decorator, Animation, Color, Component, instantiate, Label, Node, Prefab, randomRangeInt, screen, Size, tween, UIOpacity, UITransform, Vec3 } from 'cc';
+import { _decorator, animation, Animation, Color, Component, instantiate, Label, Node, Prefab, randomRangeInt, screen, Size, tween, UIOpacity, UITransform, Vec3 } from 'cc';
 import { SelectBoat } from '../SelectBoat';
 import { BoatCtrl } from './BoatCtrl';
 import { HelmCtrlV1 } from './HelmCtrlV1';
@@ -38,6 +38,7 @@ export class GamePlayCtrl extends Component {
     listNhieu = []
     startGame = false
     isGameOver = false
+    isPlaybot = false
 
     @property(Node)
     timeCoutdown: Node = null
@@ -71,11 +72,29 @@ export class GamePlayCtrl extends Component {
     helpm: Node
 
     startTime
+    timeManhinh = 10;
 
+    indexRandom = 0
+    randomTutorial() {
+        if (this.version == 1) {
+
+            if (tutorial.instance.targetNode)
+                SoundGameMaganer.instance.playQua(tutorial.instance.targetNode.getComponent(Item1).data.type)
+        }
+        if (this.version == 2) {
+            SoundGameMaganer.instance.playQua(6)
+        }
+
+        if (this.version == 3) {
+            SoundGameMaganer.instance.playQua(6)
+        }
+    }
 
 
     playTutorial() {
+        this.unschedule(this.playTutorial)
         if (GamePlayCtrl.instance.isPlayTutorial == false) {
+            GamePlayCtrl.instance.isPlayTutorial = true;
             if (GamePlayCtrl.instance.IsUserPlay == true) return
             GamePlayCtrl.instance.IsUserPlay = true
             this.hand1.active = false
@@ -87,7 +106,13 @@ export class GamePlayCtrl extends Component {
                 this.helm.getComponent(Animation).play("Scale2")
                 this.hand2.active = true;
                 GamePlayCtrl.instance.IsUserPlay2 = false;
+
+
+                this.scheduleOnce(this.randomList1, 5)
             }, 0.5)
+        }
+        else {
+            this.End()
         }
     }
 
@@ -112,42 +137,299 @@ export class GamePlayCtrl extends Component {
                 this.version = 1
                 this.listChu = MiniGame.mini1;
                 this.listNhieu = MiniGame.mini1Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullSo(2)
+                // }, 3.5)
+                break;
+            case "tl_cheothuyen_5":
+                this.version = 1
+                this.listChu = MiniGame.mini2;
+                this.listNhieu = MiniGame.mini2Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullSo(5)
+                // }, 3)
+                break;
+            case "tl_cheothuyen_9":
+                this.version = 1
+                this.listChu = MiniGame.mini3;
+                this.listNhieu = MiniGame.mini3Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullSo(9)
+                // }, 3)
+                break;
+            case "tv_cheothuyen_e":
+                this.version = 2
+                this.listChu = MiniGame.mini4;
+                this.listNhieu = MiniGame.mini4Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(0)
+                // }, 3)
+                break;
+            case "tv_cheothuyen_oo":
+                this.version = 2
+                this.listChu = MiniGame.mini5;
+                this.listNhieu = MiniGame.mini5Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(1)
+                // }, 3)
+                break;
+
+            case "tv_cheothuyen_x":
+                this.version = 2
+                this.listChu = MiniGame.mini6;
+                this.listNhieu = MiniGame.mini6Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(2)
+                // }, 3)
+                break;
+
+            case "tv_cheothuyen_boss2":
+                this.version = 2
+                this.listChu = MiniGame.mini7;
+                this.listNhieu = MiniGame.mini7Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(0)
+                //     this.scheduleOnce(() => {
+                //         SoundGameMaganer.instance.playFullChu(3)
+                //         this.scheduleOnce(() => {
+                //             SoundGameMaganer.instance.playFullChu(4)
+                //         }, 1)
+                //     }, 1)
+                // }, 3)
+                break;
+
+
+            case "tv_cheothuyen_boss3":
+                this.version = 2
+                this.listChu = MiniGame.mini8;
+                this.listNhieu = MiniGame.mini8Nhieu;
+                SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(5)
+                //     this.scheduleOnce(() => {
+                //         SoundGameMaganer.instance.playFullChu(6)
+                //         this.scheduleOnce(() => {
+                //             SoundGameMaganer.instance.playFullChu(7)
+                //         }, 1)
+                //     }, 1)
+                // }, 3)
+                break;
+
+            case "tv_cheothuyen_boss5":
+                this.version = 2
+                this.listChu = MiniGame.mini9;
+                this.listNhieu = MiniGame.mini9Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(8)
+                //     this.scheduleOnce(() => {
+                //         SoundGameMaganer.instance.playFullChu(9)
+                //         this.scheduleOnce(() => {
+                //             SoundGameMaganer.instance.playFullChu(10)
+                //         }, 1)
+                //     }, 1)
+                // }, 3)
+                break;
+            case "tv_cheothuyen_kh":
+                this.version = 2
+                this.listChu = MiniGame.mini10;
+                this.listNhieu = MiniGame.mini10Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(11)
+                // }, 3)
+                break
+            case "tv_cheothuyen_ng":
+                this.version = 2
+                this.listChu = MiniGame.mini11;
+                this.listNhieu = MiniGame.mini11Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(12)
+                // }, 3)
+                break
+            case "tv_cheothuyen_boss10":
+                this.version = 2
+                this.listChu = MiniGame.mini12;
+                this.listNhieu = MiniGame.mini12Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(13)
+                //     this.scheduleOnce(() => {
+                //         SoundGameMaganer.instance.playFullChu(12)
+                //         this.scheduleOnce(() => {
+                //             SoundGameMaganer.instance.playFullChu(14)
+                //         }, 1)
+                //     }, 1)
+                // }, 3)
+                break
+            case "tv_cheothuyen_omop":
+                this.version = 2
+                this.listChu = MiniGame.mini13
+                this.listNhieu = MiniGame.mini13Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(17)
+                //     this.scheduleOnce(() => {
+                //         SoundGameMaganer.instance.playFullChu(18)
+                //     }, 1)
+                // }, 3)
+                break
+            case "tv_cheothuyen_onot":
+                this.version = 2
+                this.listChu = MiniGame.mini14
+                this.listNhieu = MiniGame.mini14Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(15)
+                //     this.scheduleOnce(() => {
+                //         SoundGameMaganer.instance.playFullChu(16)
+                //     }, 1)
+                // }, 3)
+                break
+            case "tv_cheothuyen_oaoe":
+                this.version = 2
+                this.listChu = MiniGame.mini15
+                this.listNhieu = MiniGame.mini15Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(19)
+                //     this.scheduleOnce(() => {
+                //         SoundGameMaganer.instance.playFullChu(20)
+                //     }, 1)
+                // }, 3)
+                break
+            case "tv_cheothuyen_uownguowc":
+                this.version = 2
+                this.listChu = MiniGame.mini16
+                this.listNhieu = MiniGame.mini16Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(21)
+                //     this.scheduleOnce(() => {
+                //         SoundGameMaganer.instance.playFullChu(22)
+                //     }, 1)
+                // }, 3)
+                break
+            case "tv_cheothuyen_boss15":
+                this.version = 2
+                this.listChu = MiniGame.mini17
+                this.listNhieu = MiniGame.mini17Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(23)
+                //     this.scheduleOnce(() => {
+                //         SoundGameMaganer.instance.playFullChu(24)
+                //         this.scheduleOnce(() => {
+                //             SoundGameMaganer.instance.playFullChu(25)
+                //         }, 1)
+                //     }, 1)
+                // }, 3)
+                break
+            case "tv_cheothuyen_boss18":
+                this.version = 2
+                this.listChu = MiniGame.mini18
+                this.listNhieu = MiniGame.mini18Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
+                // this.scheduleOnce(() => {
+                //     SoundGameMaganer.instance.playFullChu(26)
+                //     this.scheduleOnce(() => {
+                //         SoundGameMaganer.instance.playFullChu(27)
+                //         this.scheduleOnce(() => {
+                //             SoundGameMaganer.instance.playFullChu(28)
+                //         }, 1)
+                //     }, 1)
+                // }, 3)
+                break
+            case "tl_cheothuyen_phepcong":
+                this.version = 3
+                this.listChu = MiniGame.mini19
+                this.listNhieu = MiniGame.mini19Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                break
+            case "tl_cheothuyen_phepcong10":
+                this.version = 3
+                this.listChu = MiniGame.mini20
+                this.listNhieu = MiniGame.mini20Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                break
+            case "tl_cheothuyen_pheptru":
+                this.version = 3
+                this.listChu = MiniGame.mini21
+                this.listNhieu = MiniGame.mini21Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                break
+            case "tl_cheothuyen_pheptru5":
+                this.version = 3
+                this.listChu = MiniGame.mini22
+                this.listNhieu = MiniGame.mini22Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
+                break
+            case "tv_cheothuyen_boss12":
+                this.version = 4
+                this.listChu = MiniGame.mini23
+                this.listNhieu = MiniGame.mini23Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 6)
+                break
+            case "tv_cheothuyen_boss16":
+                this.version = 4
+                this.listChu = MiniGame.mini24
+                this.listNhieu = MiniGame.mini24Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 6)
+                break
+            case "tv_cheothuyen_ongoc":
+                this.version = 4
+                this.listChu = MiniGame.mini25
+                this.listNhieu = MiniGame.mini25Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 6)
+                this.diem++
+                break
+            case "tv_cheothuyen_boss19":
+                this.version = 4
+                this.listChu = MiniGame.mini26
+                this.listNhieu = MiniGame.mini26Nhieu;
+                // SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 6)
+                break
+            default:
+                break;
+        }
+    }
+    playThoai() {
+        this.canvas.active = true
+        let input = this.getParamUrl('input')
+        switch (input) {
+            case "tl_cheothuyen_2":
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullSo(2)
                 }, 3.5)
                 break;
             case "tl_cheothuyen_5":
-                this.version = 1
-                this.listChu = MiniGame.mini2;
-                this.listNhieu = MiniGame.mini2Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullSo(5)
                 }, 3)
                 break;
             case "tl_cheothuyen_9":
-                this.version = 1
-                this.listChu = MiniGame.mini3;
-                this.listNhieu = MiniGame.mini3Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullSo(9)
                 }, 3)
                 break;
             case "tv_cheothuyen_e":
-                this.version = 2
-                this.listChu = MiniGame.mini4;
-                this.listNhieu = MiniGame.mini4Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(0)
                 }, 3)
                 break;
             case "tv_cheothuyen_oo":
-                this.version = 2
-                this.listChu = MiniGame.mini5;
-                this.listNhieu = MiniGame.mini5Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(1)
@@ -155,9 +437,6 @@ export class GamePlayCtrl extends Component {
                 break;
 
             case "tv_cheothuyen_x":
-                this.version = 2
-                this.listChu = MiniGame.mini6;
-                this.listNhieu = MiniGame.mini6Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(2)
@@ -165,9 +444,6 @@ export class GamePlayCtrl extends Component {
                 break;
 
             case "tv_cheothuyen_boss2":
-                this.version = 2
-                this.listChu = MiniGame.mini7;
-                this.listNhieu = MiniGame.mini7Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(0)
@@ -182,9 +458,6 @@ export class GamePlayCtrl extends Component {
 
 
             case "tv_cheothuyen_boss3":
-                this.version = 2
-                this.listChu = MiniGame.mini8;
-                this.listNhieu = MiniGame.mini8Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(5)
@@ -198,9 +471,6 @@ export class GamePlayCtrl extends Component {
                 break;
 
             case "tv_cheothuyen_boss5":
-                this.version = 2
-                this.listChu = MiniGame.mini9;
-                this.listNhieu = MiniGame.mini9Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(8)
@@ -213,27 +483,18 @@ export class GamePlayCtrl extends Component {
                 }, 3)
                 break;
             case "tv_cheothuyen_kh":
-                this.version = 2
-                this.listChu = MiniGame.mini10;
-                this.listNhieu = MiniGame.mini10Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(11)
                 }, 3)
                 break
             case "tv_cheothuyen_ng":
-                this.version = 2
-                this.listChu = MiniGame.mini11;
-                this.listNhieu = MiniGame.mini11Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(12)
                 }, 3)
                 break
             case "tv_cheothuyen_boss10":
-                this.version = 2
-                this.listChu = MiniGame.mini12;
-                this.listNhieu = MiniGame.mini12Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(13)
@@ -246,9 +507,6 @@ export class GamePlayCtrl extends Component {
                 }, 3)
                 break
             case "tv_cheothuyen_omop":
-                this.version = 2
-                this.listChu = MiniGame.mini13
-                this.listNhieu = MiniGame.mini13Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(17)
@@ -258,9 +516,6 @@ export class GamePlayCtrl extends Component {
                 }, 3)
                 break
             case "tv_cheothuyen_onot":
-                this.version = 2
-                this.listChu = MiniGame.mini14
-                this.listNhieu = MiniGame.mini14Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(15)
@@ -270,9 +525,6 @@ export class GamePlayCtrl extends Component {
                 }, 3)
                 break
             case "tv_cheothuyen_oaoe":
-                this.version = 2
-                this.listChu = MiniGame.mini15
-                this.listNhieu = MiniGame.mini15Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(19)
@@ -282,9 +534,6 @@ export class GamePlayCtrl extends Component {
                 }, 3)
                 break
             case "tv_cheothuyen_uownguowc":
-                this.version = 2
-                this.listChu = MiniGame.mini16
-                this.listNhieu = MiniGame.mini16Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(21)
@@ -294,9 +543,6 @@ export class GamePlayCtrl extends Component {
                 }, 3)
                 break
             case "tv_cheothuyen_boss15":
-                this.version = 2
-                this.listChu = MiniGame.mini17
-                this.listNhieu = MiniGame.mini17Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(23)
@@ -309,9 +555,6 @@ export class GamePlayCtrl extends Component {
                 }, 3)
                 break
             case "tv_cheothuyen_boss18":
-                this.version = 2
-                this.listChu = MiniGame.mini18
-                this.listNhieu = MiniGame.mini18Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 3)
                 this.scheduleOnce(() => {
                     SoundGameMaganer.instance.playFullChu(26)
@@ -324,57 +567,60 @@ export class GamePlayCtrl extends Component {
                 }, 3)
                 break
             case "tl_cheothuyen_phepcong":
-                this.version = 3
-                this.listChu = MiniGame.mini19
-                this.listNhieu = MiniGame.mini19Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 break
             case "tl_cheothuyen_phepcong10":
-                this.version = 3
-                this.listChu = MiniGame.mini20
-                this.listNhieu = MiniGame.mini20Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 break
             case "tl_cheothuyen_pheptru":
-                this.version = 3
-                this.listChu = MiniGame.mini21
-                this.listNhieu = MiniGame.mini21Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 break
             case "tl_cheothuyen_pheptru5":
-                this.version = 3
-                this.listChu = MiniGame.mini22
-                this.listNhieu = MiniGame.mini22Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent)
                 break
             case "tv_cheothuyen_boss12":
-                this.version = 4
-                this.listChu = MiniGame.mini23
-                this.listNhieu = MiniGame.mini23Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 6)
                 break
             case "tv_cheothuyen_boss16":
-                this.version = 4
-                this.listChu = MiniGame.mini24
-                this.listNhieu = MiniGame.mini24Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 6)
                 break
             case "tv_cheothuyen_ongoc":
-                this.version = 4
-                this.listChu = MiniGame.mini25
-                this.listNhieu = MiniGame.mini25Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 6)
                 this.diem++
                 break
             case "tv_cheothuyen_boss19":
-                this.version = 4
-                this.listChu = MiniGame.mini26
-                this.listNhieu = MiniGame.mini26Nhieu;
                 SoundGameMaganer.instance.playThoai(SelectBoat.instance.numberCurrent + 6)
                 break
             default:
                 break;
         }
+
+    }
+
+    randomList1() {
+        GamePlayCtrl.instance.IsUserPlay2 = true;
+        GamePlayCtrl.instance.hand2.active = false
+        GamePlayCtrl.instance.helm.getComponent(Animation).stop()
+
+        this.unschedule(this.randomList1)
+        this.canvas.active = true
+        this.startGame = false
+        this.scheduleOnce(() => {
+            this.SetTimeCountdown()
+            SoundGameMaganer.instance.playEffect(3)
+            this.scheduleOnce(() => {
+                this.playThoai()
+                this.scheduleOnce(() => {
+                    GamePlayCtrl.instance.SetTime()
+                    this.startGame = true;
+                    this.isPlaybot = true
+                }, 5)
+
+            }, 4)
+        }, 0)
+
+
+
     }
 
     IsUserPlay = false
@@ -388,29 +634,22 @@ export class GamePlayCtrl extends Component {
         this.SetUp()
 
         this.FindBoardCorrect()
+
+        SoundGameMaganer.instance.playThoai(10)
         this.scheduleOnce(() => {
-            this.SetTimeCountdown()
-            SoundGameMaganer.instance.playEffect(3)
-        }, 5)
+            this.startGame = true
+            this.hand1.active = true
+            this.up.getComponent(Animation).play("Scale2")
+            this.scheduleOnce(() => {
+                this.down.getComponent(Animation).play("Scale2")
+            }, 0.4)
 
 
-
-        this.scheduleOnce(() => {
-            this.scheduleOnce(()=>{
-                this.startGame = true
-                this.hand1.active = true
-                this.up.getComponent(Animation).play("Scale2")
-                this.scheduleOnce(() => {
-                    this.down.getComponent(Animation).play("Scale2")
-                }, 0.2)
-
-                this.SetTime()
-            })
-            
+            this.scheduleOnce(this.playTutorial, 10)
             SoundGameMaganer.instance.playThoai(12)
 
 
-        }, 9)
+        }, 6)
     }
 
 
@@ -577,12 +816,12 @@ export class GamePlayCtrl extends Component {
                     this.isGameOver = true;
                     this.TinhDiem()
                 }
-                if (this.diem <= 1) {
-                    SoundGameMaganer.instance.playSai()
-                }
-                else {
-                    SoundGameMaganer.instance.playKhen()
-                }
+                // if (this.diem <= 1) {
+                //     SoundGameMaganer.instance.playSai()
+                // }
+                // else {
+                //     SoundGameMaganer.instance.playKhen()
+                // }
 
                 this.scheduleOnce(() => {
                     StarCtrl.instance.showNode()
@@ -719,6 +958,7 @@ export class GamePlayCtrl extends Component {
     SetTimeCountdown() {
         this.timeCoutdown.active = true
         if (this.timeCount < 1) {
+
             console.log(this.timeCount)
             this.timeCoutdown.getComponent(Label).string = "Bắt Đầu"
             this.timeCoutdown.setScale(new Vec3(2, 2, 2))
@@ -726,6 +966,7 @@ export class GamePlayCtrl extends Component {
             tween(this.timeCoutdown).to(1, { scale: new Vec3(1, 1, 1) })
                 .call(() => {
                     this.timeCoutdown.active = false
+
                 })
                 .start()
             tween(this.timeCoutdown.getComponent(UIOpacity)).to(1, { opacity: 255 })
@@ -754,6 +995,7 @@ export class GamePlayCtrl extends Component {
 
     timeTutorial = 15
     timeTutorial1 = 5
+    isPlay = false
     protected update(dt: number): void {
         this.node.getComponent(UITransform).setContentSize(this.getSizeWindow())
         if (this.startGame == false && this.tutorial1 != null) {
@@ -765,24 +1007,15 @@ export class GamePlayCtrl extends Component {
                 this.tutorial1.active = false
             }
         }
-        if(GamePlayCtrl.instance.IsUserPlay == false) return;
-        if(GamePlayCtrl.instance.IsUserPlay2 == false) return;
+        if (GamePlayCtrl.instance.IsUserPlay == false) return;
+        if (GamePlayCtrl.instance.IsUserPlay2 == false) return;
         if (this.startGame == false) return
+        this.timeManhinh -= dt
         this.timeTutorial -= dt
         if (this.timeTutorial <= 0) {
             if (tutorial.instance.node.parent.active == false) {
                 tutorial.instance.node.parent.active = true
-                if (this.version == 1) {
-                    if (tutorial.instance.targetNode)
-                        SoundGameMaganer.instance.playQua(tutorial.instance.targetNode.getComponent(Item1).data.type)
-                }
-                if (this.version == 2) {
-                    SoundGameMaganer.instance.playQua(6)
-                }
-
-                if (this.version == 3) {
-                    SoundGameMaganer.instance.playQua(6)
-                }
+                this.randomTutorial()
 
             }
 
@@ -791,6 +1024,12 @@ export class GamePlayCtrl extends Component {
             // if (tutorial.instance.targetNode == null || tutorial.instance.targetNode.active == false)
             //     tutorial.instance.node.parent.active = false
         }
+
+        if (this.timeManhinh <= 0 && this.isPlay == false) {
+            this.isPlay = true
+            this.Play()
+        }
+
     }
     public getSizeWindow(): Size {
         let newH: number = 0
@@ -963,6 +1202,24 @@ export class GamePlayCtrl extends Component {
 
 
         listWin[0].setPosition(this.vectorCorrect)
+    }
+
+
+
+
+
+
+
+    Play() {
+        this.up.getComponent(Animation).play("Scale2")
+        this.down.getComponent(Animation).play("Scale2")
+        this.helm.getComponent(Animation).play("Scale2")
+    }
+
+    End() {
+        this.up.getComponent(Animation).stop()
+        this.down.getComponent(Animation).stop()
+        this.helm.getComponent(Animation).stop()
     }
 
 }

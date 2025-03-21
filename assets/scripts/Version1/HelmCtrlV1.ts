@@ -29,10 +29,15 @@ export class HelmCtrlV1 extends Component {
     }
 
     onTouchStart(event: EventTouch) {
-        if(GamePlayCtrl.instance.IsUserPlay == false) return
-        GamePlayCtrl.instance.IsUserPlay2 = true;
-        GamePlayCtrl.instance.hand2.active = false
+        if (GamePlayCtrl.instance.IsUserPlay == false) return
+        if (GamePlayCtrl.instance.IsUserPlay2 == false) {
+
+            GamePlayCtrl.instance.randomList1()
+        }
         GamePlayCtrl.instance.helm.getComponent(Animation).stop()
+        GamePlayCtrl.instance.timeManhinh = 10
+        GamePlayCtrl.instance.isPlay = false
+        GamePlayCtrl.instance.End()
         // Lấy vị trí của vô lăng (tâm của vô lăng)
         const worldPos = this.node.getWorldPosition();
         this.wheelCenter.set(worldPos.x, worldPos.y); // Lưu tâm của vô lăng
@@ -49,8 +54,11 @@ export class HelmCtrlV1 extends Component {
 
     onTouchMove(event: EventTouch) {
         // Lấy vị trí chạm hiện tại
-        if(GamePlayCtrl.instance.IsUserPlay == false) return
+        if (GamePlayCtrl.instance.IsUserPlay == false) return
         if (GamePlayCtrl.instance.startGame == false) return;
+        GamePlayCtrl.instance.timeManhinh = 10
+        GamePlayCtrl.instance.isPlay = false
+        GamePlayCtrl.instance.End()
         if (this.boat) {
             const touchPos = event.getUILocation();
             const currentVector = new Vec2(touchPos.x - this.wheelCenter.x, touchPos.y - this.wheelCenter.y);
@@ -93,7 +101,7 @@ export class HelmCtrlV1 extends Component {
 
     current = 0
     updateCarRotation(deltaTime) {
-        if(GamePlayCtrl.instance.IsUserPlay == false) return
+        if (GamePlayCtrl.instance.IsUserPlay == false) return
         if (this.boat) {
             // Lấy góc hiện tại của thuyền
             // Làm mượt góc quay theo thời gian
@@ -105,6 +113,9 @@ export class HelmCtrlV1 extends Component {
     }
 
     onTouchEnd(event: EventTouch) {
+        GamePlayCtrl.instance.timeManhinh = 10
+        GamePlayCtrl.instance.isPlay = false
+        GamePlayCtrl.instance.End()
         // Không cần làm gì thêm khi người dùng nhấc tay ra
         //this.current = this.boat.angle = this.current;
     }

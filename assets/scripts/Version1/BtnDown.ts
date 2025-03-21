@@ -13,6 +13,8 @@ export class BtnDown extends Component {
             GamePlayCtrl.instance.IsUserPlay = true
             BoatCtrl.instance.huong = -1
             this.node.setScale(new Vec3(1.1, 1.1, 1.1))
+            GamePlayCtrl.instance.timeManhinh = 10
+            GamePlayCtrl.instance.isPlay = false
 
             SoundGameMaganer.instance.playEffect(7)
 
@@ -24,12 +26,16 @@ export class BtnDown extends Component {
             if (GamePlayCtrl.instance.startGame == false) return;
             BoatCtrl.instance.huong = -0.1
             this.node.setScale(new Vec3(1, 1, 1))
+            GamePlayCtrl.instance.timeManhinh = 10
+            GamePlayCtrl.instance.isPlay = false
         }, this)
 
         this.node.on(Input.EventType.TOUCH_CANCEL, () => {
             if (GamePlayCtrl.instance.startGame == false) return;
             BoatCtrl.instance.huong = -0.1
             this.node.setScale(new Vec3(1, 1, 1))
+            GamePlayCtrl.instance.timeManhinh = 10
+            GamePlayCtrl.instance.isPlay = false
         }, this)
 
     }
